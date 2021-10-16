@@ -1,7 +1,7 @@
-const hre = require("hardhat");
+const hreTest = require("hardhat");
 
-const main = async () => {
-  const nftContractFactory = await hre.ethers.getContractFactory("BeegNFT");
+const mainTest = async () => {
+  const nftContractFactory = await hreTest.ethers.getContractFactory("BeegNFT");
   const nftContract = await nftContractFactory.deploy();
   await nftContract.deployed();
   console.log("Contract deployed to:", nftContract.address);
@@ -23,9 +23,9 @@ const main = async () => {
   console.log("Minted last one!!!");
 };
 
-const runMain = async () => {
+const runMainTest = async () => {
   try {
-    await main();
+    await mainTest();
     process.exit(0);
   } catch (error) {
     console.log(error);
