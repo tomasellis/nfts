@@ -7,6 +7,9 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "hardhat/console.sol";
 
+// For Base64 encoding
+import { Base64 } from "./libraries/Base64.sol";
+
 // We inherit the contract we imported. This means we'll have access
 // to the inherited contract's methods.
 contract BeegNFT is ERC721URIStorage {
@@ -26,7 +29,7 @@ contract BeegNFT is ERC721URIStorage {
 
 
   // We need to pass the name of our NFTs token and it's symbol.
-  constructor() ERC721 ("SquareNFT", "SQUARE") {
+  constructor() ERC721 ("BeegNFT", "BEEG") {
     console.log("This is my NFT contract. Woah!");
   }
 
@@ -63,19 +66,42 @@ contract BeegNFT is ERC721URIStorage {
     string memory first = pickRandomFirstWord(newItemId);
     string memory second = pickRandomSecondWord(newItemId);
     string memory third = pickRandomThirdWord(newItemId);
+    string memory combinedWord = string(abi.encodePacked(first, second, third));
 
     // Close the svg
-    string memory finalSvg = string(abi.encodePacked(baseSvg, first, second, third, "</text></svg>"));
+    string memory finalSvg = string(abi.encodePacked(baseSvg, combinedWord, "</text></svg>"));
+
+    // Get all the JSON metadata in place and base64 encode it.
+    string memory json = Base64.encode(
+        bytes(
+            string(
+                abi.encodePacked(
+                    '{"name": "',
+                    // We set the title of our NFT as the generated word.
+                    combinedWord,
+                    '", "description": "Worldwide aclaimed collection.", "image": "data:image/svg+xml;base64,',
+                    // We add data:image/svg+xml;base64 and then append our base64 encode our svg.
+                    Base64.encode(bytes(finalSvg)),
+                    '"}'
+                )
+            )
+        )
+    );
     
+    // Just like before, we prepend data:application/json;base64, to our data.
+    string memory finalTokenUri = string(
+        abi.encodePacked("data:application/json;base64,", json)
+    );
+
     console.log("\n--------------------");  
-    console.log(finalSvg);
+    console.log(finalTokenUri);
     console.log("--------------------\n");
     
      // Actually mint the NFT to the sender using msg.sender.
     _safeMint(msg.sender, newItemId);
 
     // Set the NFTs data.
-    _setTokenURI(newItemId, "data:application/json;base64,ewoibmFtZSI6ICJIYW5kc3VwdG9uIiwKImRlc2NyaXB0aW9uIjogIkEgc2lsZW50IGhlcm8uIEEgd2F0Y2hmdWwgcHJvdGVjdG9yLiIsCiJpbWFnZSI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lJSEJ5WlhObGNuWmxRWE53WldOMFVtRjBhVzg5SW5oTmFXNVpUV2x1SUcxbFpYUWlJSFpwWlhkQ2IzZzlJakFnTUNBek5UQWdNelV3SWo0S0lDQWdJRHh6ZEhsc1pUNHVZbUZ6WlNCN0lHWnBiR3c2SUhkb2FYUmxPeUJtYjI1MExXWmhiV2xzZVRvZ2MyVnlhV1k3SUdadmJuUXRjMmw2WlRvZ01UUndlRHNnZlR3dmMzUjViR1UrQ2lBZ0lDQThjbVZqZENCM2FXUjBhRDBpTVRBd0pTSWdhR1ZwWjJoMFBTSXhNREFsSWlCbWFXeHNQU0ppYkdGamF5SWdMejRLSUNBZ0lEeDBaWGgwSUhnOUlqVXdKU0lnZVQwaU5UQWxJaUJqYkdGemN6MGlZbUZ6WlNJZ1pHOXRhVzVoYm5RdFltRnpaV3hwYm1VOUltMXBaR1JzWlNJZ2RHVjRkQzFoYm1Ob2IzSTlJbTFwWkdSc1pTSStSWEJwWTB4dmNtUklZVzFpZFhKblpYSThMM1JsZUhRK0Nqd3ZjM1puUGc9PSIKfQ==");
+    _setTokenURI(newItemId, finalTokenUri);
 
     // Check when its minted and to whom
     console.log("An NFT w/ ID %s has been minted to %s", newItemId, msg.sender);
@@ -84,7 +110,6 @@ contract BeegNFT is ERC721URIStorage {
     _tokenIds.increment();
   }
 
-  function pickRandomFirstWord
 }
 
 

@@ -28,6 +28,9 @@ interface BeegNFTInterface extends ethers.utils.Interface {
     "makeAnEpicNFT()": FunctionFragment;
     "name()": FunctionFragment;
     "ownerOf(uint256)": FunctionFragment;
+    "pickRandomFirstWord(uint256)": FunctionFragment;
+    "pickRandomSecondWord(uint256)": FunctionFragment;
+    "pickRandomThirdWord(uint256)": FunctionFragment;
     "safeTransferFrom(address,address,uint256)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
@@ -56,6 +59,18 @@ interface BeegNFTInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "ownerOf",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "pickRandomFirstWord",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "pickRandomSecondWord",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "pickRandomThirdWord",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
@@ -96,6 +111,18 @@ interface BeegNFTInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "ownerOf", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "pickRandomFirstWord",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "pickRandomSecondWord",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "pickRandomThirdWord",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "safeTransferFrom",
     data: BytesLike
@@ -220,6 +247,21 @@ export class BeegNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    pickRandomFirstWord(
+      tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    pickRandomSecondWord(
+      tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    pickRandomThirdWord(
+      tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
     "safeTransferFrom(address,address,uint256)"(
       from: string,
       to: string,
@@ -288,6 +330,21 @@ export class BeegNFT extends BaseContract {
 
   ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
+  pickRandomFirstWord(
+    tokenId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  pickRandomSecondWord(
+    tokenId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  pickRandomThirdWord(
+    tokenId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
   "safeTransferFrom(address,address,uint256)"(
     from: string,
     to: string,
@@ -350,6 +407,21 @@ export class BeegNFT extends BaseContract {
     name(overrides?: CallOverrides): Promise<string>;
 
     ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+    pickRandomFirstWord(
+      tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    pickRandomSecondWord(
+      tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    pickRandomThirdWord(
+      tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     "safeTransferFrom(address,address,uint256)"(
       from: string,
@@ -476,6 +548,21 @@ export class BeegNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    pickRandomFirstWord(
+      tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    pickRandomSecondWord(
+      tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    pickRandomThirdWord(
+      tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     "safeTransferFrom(address,address,uint256)"(
       from: string,
       to: string,
@@ -547,6 +634,21 @@ export class BeegNFT extends BaseContract {
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     ownerOf(
+      tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    pickRandomFirstWord(
+      tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    pickRandomSecondWord(
+      tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    pickRandomThirdWord(
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
